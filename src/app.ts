@@ -27,9 +27,9 @@ export abstract class BaseApp implements NodeAppInterface {
 
   protected initMiddleware(): void {
     this.initParserMiddleware();
+    this.initSecurityMiddleware();
     this.initDebugMiddleware();
     this.initHealthMiddleware();
-    this.initSecurityMiddleware();
   }
 
   protected initParserMiddleware(): void {

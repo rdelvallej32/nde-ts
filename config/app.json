@@ -20,6 +20,11 @@
       "noSniff": true,
       "referrerPolicy": false,
       "xssFilter": true
+    },
+    "csrf": {
+      "cookie": true,
+      "key": "_csrf",
+      "Path": "/"
     }
   }
 }
