@@ -12,8 +12,8 @@ export class NodeAppConfig {
   constructor(public env?: AppRuntimeEnv) {
     const pkg: Object = require(path.join(process.cwd(), 'package.json'));
     const appEnv = {
-      NODE_ENV:  APP_NODE_ENV_DEFAULT,
-      PORT: APP_NODE_PORT_DEFAULT
+      NODE_ENV:  env.NODE_ENV || APP_NODE_ENV_DEFAULT,
+      PORT: env.PORT || APP_NODE_PORT_DEFAULT
     };
 
     nconf.argv()
