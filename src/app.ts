@@ -6,7 +6,8 @@ import { express } from './lib/express';
 import {
   AppDebug,
   AppHealth,
-  AppParsers
+  AppParsers,
+  AppSecurity
 } from './common/middleware';
 import { AppConfig, NodeAppConfig } from './common/services/app-config';
 
@@ -28,6 +29,7 @@ export abstract class BaseApp implements NodeAppInterface {
     this.initParserMiddleware();
     this.initDebugMiddleware();
     this.initHealthMiddleware();
+    this.initSecurityMiddleware();
   }
 
   protected initParserMiddleware(): void {
@@ -40,6 +42,10 @@ export abstract class BaseApp implements NodeAppInterface {
 
   protected initDebugMiddleware(): void {
     new AppDebug(this.app);
+  }
+
+  protected initSecurityMiddleware(): void {
+    new AppSecurity(this.app);
   }
 
   // public abstract initRouting(): void;
