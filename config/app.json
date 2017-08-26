@@ -1,0 +1,9 @@
+{
+  "health": {
+    "route": "/health"
+  },
+  "parsers": {
+    "cookie": true,
+    "body": true
+  }
+}
