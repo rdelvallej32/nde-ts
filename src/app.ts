@@ -3,6 +3,11 @@ import * as path from 'path';
 
 import { express } from './lib/express';
 
+import {
+  AppDebug,
+  AppHealth,
+  AppParsers
+} from './common/middleware';
 import { AppConfig, NodeAppConfig } from './common/services/app-config';
 
 export interface NodeAppInterface {
@@ -16,6 +21,25 @@ export abstract class BaseApp implements NodeAppInterface {
 
   constructor() {
     this.app = express();
+    this.initMiddleware();
+  }
+
+  protected initMiddleware(): void {
+    this.initParserMiddleware();
+    this.initDebugMiddleware();
+    this.initHealthMiddleware();
+  }
+
+  protected initParserMiddleware(): void {
+    new AppParsers(this.app);
+  }
+
+  protected initHealthMiddleware(): void {
+    new AppHealth(this.app);
+  }
+
+  protected initDebugMiddleware(): void {
+    new AppDebug(this.app);
   }
 
   // public abstract initRouting(): void;
