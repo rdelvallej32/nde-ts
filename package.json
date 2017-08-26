@@ -1,13 +1,13 @@
 {
-  "name": "node-typescript",
+  "name": "nde-ts",
   "version": "1.0.0",
-  "description": "",
+  "description": "Common node and express library for node apps",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "Roberto Del Valle <rdelvallej@gmail.com>",
   "license": "ISC",
   "dependencies": {
     "@types/express": "^4.0.37",

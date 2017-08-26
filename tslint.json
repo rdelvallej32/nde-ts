@@ -1,4 +1,7 @@
 {
+  "extends": [
+    "tslint:recommended"
+  ],
   "rules": {
     "class-name": true,
     "comment-format": [
@@ -21,7 +24,9 @@
     "member-access": false,
     "member-ordering": [
       true,
-      "static-before-instance",
+      {
+        "order": "statics-first"
+      },
       "variables-before-functions"
     ],
     "no-arg": true,
