@@ -46,6 +46,14 @@ export class NodeAppConfig {
   public set(key: string, value: string): void {
     nconf.set(key, value);
   }
+
+  public getEnvironment(): AppNodeEnv {
+    return this.get('env:NODE_ENV');
+  }
+
+  public isProd(): boolean {
+    return (/prod/).test(this.getEnvironment());
+  }
 }
 
 export const AppConfig = new NodeAppConfig(process.env);
