@@ -1,0 +1,35 @@
+{
+  "health": {
+    "route": "/health"
+  },
+  "parsers": {
+    "cookie": true,
+    "body": true
+  },
+  "security": {
+    "helmet": {
+      "contentSecurityPolicy": false,
+      "expectCt": false,
+      "dnsPrefetchControl": true,
+      "frameguard": true,
+      "hidePoweredBy": true,
+      "hpkp": false,
+      "hsts": true,
+      "ieNoOpen": true,
+      "noCache": false,
+      "noSniff": true,
+      "referrerPolicy": false,
+      "xssFilter": true
+    },
+    "csrf": {
+      "cookie": true,
+      "key": "_csrf",
+      "Path": "/"
+    }
+  },
+  "logs": {
+    "info": "info.log",
+    "warn": "warn.log",
+    "error": "error.log"
+  }
+}
