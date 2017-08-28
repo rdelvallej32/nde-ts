@@ -6,4 +6,5 @@ export const APP_NODE_PORT_DEFAULT = 3000;
 export type AppRuntimeEnv = {
   NODE_ENV?: AppNodeEnv;
   PORT?: number;
+  VOLUME_LOG?: string;
 };

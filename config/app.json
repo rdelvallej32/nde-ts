@@ -26,5 +26,10 @@
       "key": "_csrf",
       "Path": "/"
     }
+  },
+  "logs": {
+    "info": "info.log",
+    "warn": "warn.log",
+    "error": "error.log"
   }
 }
