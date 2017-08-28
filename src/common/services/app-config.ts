@@ -9,6 +9,13 @@ type ConfigOption = {
 };
 
 export class NodeAppConfig {
+  public static init(env?: AppRuntimeEnv): NodeAppConfig {
+    nconf.reset();
+    nconf.remove('base');
+
+    return new NodeAppConfig(env || process.env);
+  }
+
   constructor(public env?: AppRuntimeEnv) {
     const pkg: Object = require(path.join(process.cwd(), 'package.json'));
     const appEnv = {
@@ -56,4 +63,4 @@ export class NodeAppConfig {
   }
 }
 
-export const AppConfig = new NodeAppConfig(process.env);
+export const AppConfig = NodeAppConfig.init();
