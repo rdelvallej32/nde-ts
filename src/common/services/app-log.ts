@@ -23,7 +23,7 @@ type LogDetail = {
 };
 
 class NodeAppLog {
-  private _log: bunyan.Logger;
+  private _log: bunyan;
   private _levels: LogLevel[] = [LogLevel.INFO, LogLevel.WARN, LogLevel.ERROR];
   private streams: bunyan.Stream[] = [];
   constructor(volume: string) {
