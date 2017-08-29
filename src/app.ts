@@ -15,7 +15,7 @@ import {
 import { AppConfig, AppLog, NodeAppConfig } from './common/services/index';
 
 export interface NodeAppInterface {
-  // initRouting(): void;
+  initRouting(): void;
   serve(): http.Server;
 }
 
@@ -40,6 +40,8 @@ export abstract class BaseApp implements NodeAppInterface {
       )
     });
   }
+
+  public abstract initRouting(): void;
 
   protected initMiddleware(): void {
     this.initParserMiddleware();
@@ -88,7 +90,9 @@ export abstract class BaseApp implements NodeAppInterface {
 }
 
 class TestApp extends BaseApp {
+  initRouting() {
 
+  }
 }
 
 const server = new TestApp().serve();
