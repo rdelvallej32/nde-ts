@@ -3,6 +3,7 @@ import * as http from 'http';
 import * as path from 'path';
 
 import { express } from './lib/express';
+import { lodash as _ } from './lib/lodash';
 
 import {
   AppDebug,
@@ -10,12 +11,15 @@ import {
   AppParsers,
   AppSecurity
 } from './common/middleware';
-import { AppConfig, NodeAppConfig } from './common/services/app-config';
+
+import { AppConfig, AppLog, NodeAppConfig } from './common/services/index';
 
 export interface NodeAppInterface {
   // initRouting(): void;
   serve(): http.Server;
 }
+
+export type BaseProcess = 'middleware' | 'view-engine' | 'routing';
 
 export abstract class BaseApp implements NodeAppInterface {
   protected app: express.Express;
@@ -23,7 +27,7 @@ export abstract class BaseApp implements NodeAppInterface {
 
   constructor() {
     this.app = express();
-    this.initMiddleware();
+    this.initBase('middleware');
   }
 
   public serve(): http.Server {
@@ -60,7 +64,27 @@ export abstract class BaseApp implements NodeAppInterface {
     new AppSecurity(this.app);
   }
 
-  // public abstract initRouting(): void;
+  private initBase(process: BaseProcess, ...args: any[]): BaseApp {
+    let methodName = `init${_.upperFirst(_.camelCase(process))}`;
+    const method: Function = this[methodName];
+    const preMethod: Function = this[`before${_.upperFirst(_.camelCase(methodName))}`];
+    const postMethod: Function = this[`after${_.upperFirst(_.camelCase(methodName))}`];
+    // call "preInit"
+    if (preMethod) {
+      preMethod.apply(this, args);
+    }
+    // call "init*"
+    if (method) {
+      method.apply(this, args);
+    } else {
+      AppLog.error(`BASE-001`, new Error(`Attempt to call missing magic method "${methodName}"`));
+    }
+    // call "postInit*"
+    if (postMethod) {
+      postMethod.apply(this, args);
+    }
+    return this;
+  }
 }
 
 class TestApp extends BaseApp {
