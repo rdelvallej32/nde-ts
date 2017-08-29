@@ -33,6 +33,11 @@ export abstract class BaseApp implements NodeAppInterface {
 
   public serve(): http.Server {
     return this.app.listen(AppConfig.get('env:PORT'), () => {
+      AppLog.info('BASE-000', 'connected', {
+        app: AppConfig.get('package:name'),
+        version: AppConfig.get('package:version'),
+        environment: AppConfig.getEnvironment()
+      });
       console.log('%s v%s (%s) listening on port %d',
         AppConfig.get('package:name'),
         AppConfig.get('package:version'),
