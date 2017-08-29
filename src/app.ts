@@ -1,3 +1,4 @@
+/* tslint:disable:no-unused-expression */
 import * as http from 'http';
 import * as path from 'path';
 
@@ -25,6 +26,17 @@ export abstract class BaseApp implements NodeAppInterface {
     this.initMiddleware();
   }
 
+  public serve(): http.Server {
+    return this.app.listen(AppConfig.get('env:PORT'), () => {
+      console.log('%s v%s (%s) listening on port %d',
+        AppConfig.get('package:name'),
+        AppConfig.get('package:version'),
+        AppConfig.get('env:NODE_ENV'),
+        AppConfig.get('env:PORT')
+      )
+    });
+  }
+
   protected initMiddleware(): void {
     this.initParserMiddleware();
     this.initSecurityMiddleware();
@@ -49,17 +61,6 @@ export abstract class BaseApp implements NodeAppInterface {
   }
 
   // public abstract initRouting(): void;
-
-  public serve(): http.Server {
-    return this.app.listen(AppConfig.get('env:PORT'), () => {
-      console.log('%s v%s (%s) listening on port %d',
-        AppConfig.get('package:name'),
-        AppConfig.get('package:version'),
-        AppConfig.get('env:NODE_ENV'),
-        AppConfig.get('env:PORT')
-      )
-    });
-  }
 }
 
 class TestApp extends BaseApp {
