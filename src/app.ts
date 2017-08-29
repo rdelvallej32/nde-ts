@@ -27,7 +27,8 @@ export abstract class BaseApp implements NodeAppInterface {
 
   constructor() {
     this.app = express();
-    this.initBase('middleware');
+    this.initBase('middleware')
+      .initBase('routing');
   }
 
   public serve(): http.Server {
