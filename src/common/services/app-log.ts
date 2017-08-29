@@ -14,7 +14,7 @@ export enum LogLevel {
   FATAL = bunyan.FATAL,
 }
 
-type LogDetail = {
+export interface LogDetail {
   code?: string;
   msg?: string;
   err?: Error;
@@ -36,15 +36,27 @@ class NodeAppLog {
       serializers: {
         err: this.errSerializer,
         req: this.reqSerializer,
-      }
+      },
     });
+  }
+    public log(level: LogLevel, code: string, msg: string | Error, detail: LogDetail = {}): void {
+    detail.code = code;
+    if (msg instanceof Error) {
+      msg = <Error>msg;
+      detail.err = msg;
+    } else {
+      detail.msg = <string>msg;
+    }
+
+    let method = this.levelName(level);
+    this._log[method](detail, detail.msg);
   }
 
   private initStreams(volume: string): void {
     try {
       fs.accessSync(volume, fs.constants.W_OK);
       this.createStreams(volume);
-    } catch(e) {
+    } catch (e) {
       this.streams = [
         { level: LogLevel.DEBUG, stream: process.stdout },
         { level: LogLevel.WARN, stream: process.stdout },
@@ -80,19 +92,6 @@ class NodeAppLog {
 
   private levelName(level: LogLevel): string {
     return _.lowerCase(LogLevel[level]);
-  }
-
-  public log(level: LogLevel, code: string, msg: string | Error, detail: LogDetail = {}): void {
-    detail.code = code;
-    if (msg instanceof Error) {
-      msg = <Error>msg;
-      detail.err = msg;
-    } else {
-      detail.msg = <string>msg;
-    }
-
-    let method = this.levelName(level);
-    this._log[method](detail, detail.msg);
   }
 }
 

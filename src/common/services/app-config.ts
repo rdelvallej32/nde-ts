@@ -1,7 +1,7 @@
 import * as path from 'path';
 import { nconf } from '../../lib/nconf';
 
-import { AppRuntimeEnv, APP_NODE_ENV_DEFAULT, APP_NODE_PORT_DEFAULT, AppNodeEnv } from '../app-environment';
+import { APP_NODE_ENV_DEFAULT, APP_NODE_PORT_DEFAULT, AppNodeEnv, AppRuntimeEnv } from '../app-environment';
 
 const CONFIG_TYPES = {
   app: 'app',
@@ -39,6 +39,23 @@ export class NodeAppConfig {
       .add('nde-ts', this.getConfigOption(CONFIG_TYPES.pkgMdle));
   }
 
+  public get(key?: string): any {
+    return nconf.get(key);
+  }
+
+  // Only if there are key values to be added outside of package.json
+  public set(key: string, value: string): void {
+    nconf.set(key, value);
+  }
+
+  public getEnvironment(): AppNodeEnv {
+    return this.get('env:NODE_ENV');
+  }
+
+  public isProd(): boolean {
+    return (/prod/).test(this.getEnvironment());
+  }
+
   private getConfigOption(type: string, env?: AppNodeEnv): ConfigOption {
     return {
       type: 'file',
@@ -60,23 +77,6 @@ export class NodeAppConfig {
     }
 
     return path.resolve(configPath);
-  }
-
-  public get(key?: string): any {
-    return nconf.get(key);
-  }
-
-  // Only if there are key values to be added outside of package.json
-  public set(key: string, value: string): void {
-    nconf.set(key, value);
-  }
-
-  public getEnvironment(): AppNodeEnv {
-    return this.get('env:NODE_ENV');
-  }
-
-  public isProd(): boolean {
-    return (/prod/).test(this.getEnvironment());
   }
 }
 
