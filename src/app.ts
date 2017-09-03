@@ -9,7 +9,8 @@ import {
   AppDebug,
   AppHealth,
   AppParsers,
-  AppSecurity
+  AppSecurity,
+  AppError
 } from './common/middleware';
 
 import { AppConfig, AppLog, NodeAppConfig } from './common/services/index';
@@ -70,6 +71,10 @@ export abstract class BaseApp implements NodeAppInterface {
 
   protected initSecurityMiddleware(): void {
     new AppSecurity(this.app);
+  }
+
+  protected afterInitRouting(): void {
+    new AppError(this.app);
   }
 
   private initBase(process: BaseProcess, ...args: any[]): BaseApp {
