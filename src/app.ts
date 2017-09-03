@@ -73,8 +73,12 @@ export abstract class BaseApp implements NodeAppInterface {
     new AppSecurity(this.app);
   }
 
-  protected afterInitRouting(): void {
+  protected initErrorHandler(): void {
     new AppError(this.app);
+  }
+
+  protected afterInitRouting(): void {
+    this.initErrorHandler();
   }
 
   private initBase(process: BaseProcess, ...args: any[]): BaseApp {
