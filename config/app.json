@@ -1,3 +1,5 @@
 {
-
+  "viewEngine": {
+    "type": "papa"
+  }
 }

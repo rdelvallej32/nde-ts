@@ -7,10 +7,11 @@ import { lodash as _ } from './lib/lodash';
 
 import {
   AppDebug,
+  AppEngine,
+  AppError,
   AppHealth,
   AppParsers,
-  AppSecurity,
-  AppError
+  AppSecurity
 } from './common/middleware';
 
 import { AppConfig, AppLog, NodeAppConfig } from './common/services/index';
@@ -29,7 +30,8 @@ export abstract class BaseApp implements NodeAppInterface {
   constructor() {
     this.app = express();
     this.initBase('middleware')
-      .initBase('routing');
+      .initBase('routing')
+      .initBase('view-engine');
   }
 
   public serve(): http.Server {
@@ -49,6 +51,14 @@ export abstract class BaseApp implements NodeAppInterface {
   }
 
   public abstract initRouting(): void;
+
+  protected afterInitRouting(): void {
+    this.initErrorHandler();
+  }
+
+  protected initErrorHandler(): void {
+    new AppError(this.app);
+  }
 
   protected initMiddleware(): void {
     this.initParserMiddleware();
@@ -73,12 +83,8 @@ export abstract class BaseApp implements NodeAppInterface {
     new AppSecurity(this.app);
   }
 
-  protected initErrorHandler(): void {
-    new AppError(this.app);
-  }
-
-  protected afterInitRouting(): void {
-    this.initErrorHandler();
+  protected initViewEngine(): void {
+    new AppEngine(this.app);
   }
 
   private initBase(process: BaseProcess, ...args: any[]): BaseApp {

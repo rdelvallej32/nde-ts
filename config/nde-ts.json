@@ -31,5 +31,9 @@
     "info": "info.log",
     "warn": "warn.log",
     "error": "error.log"
+  },
+  "viewEngine": {
+    "type": "hbs",
+    "cache": true
   }
 }
