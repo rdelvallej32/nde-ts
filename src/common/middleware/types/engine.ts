@@ -6,27 +6,30 @@ import { consolidate } from '../../../lib/consolidate';
 import { BaseMiddleware } from '../base/middleware';
 import { NodeAppConfig, AppConfig } from '../../services/app-config';
 
-export type ViewEngine = 'ejs' | 'ect' | 'html' | 'handlebars' | 'jade' | 'mustache' | 'pug' | 'react';
+export type ViewEngineType = 'ejs' | 'ect' | 'html' | 'handlebars' | 'jade' | 'mustache' | 'pug' | 'react';
+export type ViewEngine = {
+  type: ViewEngineType,
+  ext: string,
+  cache: boolean
+};
 
 export class AppEngine extends BaseMiddleware {
   protected config: NodeAppConfig = AppConfig;
-  private engine: ViewEngine = AppConfig.get('viewEngine:type') || this.config.get('viewEngine:type');
 
   public init() {
     this.setViewEngine();
   }
 
   protected setViewEngine(): void {
+    const engine: ViewEngine = AppConfig.get('viewEngine') || this.config.get('viewEngine');
+
     if (!this.isValidEngine()) {
     } else {
       this.app.set('views', this.getViewsRoot());
-      this.app.set('view engine', this.engine);
+      this.app.set('view engine', engine.ext);
       this.app.engine(
-        this.engine,
-        consolidate[this.engine](this.getViewsRoot(), {cache: this.config.get('viewEngine:cache')}, (err: any, html: any) => {
-          if (err) throw err;
-          console.log(html);
-        })
+        engine.ext,
+        consolidate[engine.type]
       );
     }
   }
@@ -36,6 +39,7 @@ export class AppEngine extends BaseMiddleware {
   }
 
   private isValidEngine(): Boolean {
-     return !!consolidate[this.engine];
+    const engine: ViewEngine = AppConfig.get('viewEngine') || this.config.get('viewEngine');
+     return !!consolidate[engine.type];
   }
 }

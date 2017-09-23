@@ -50,6 +50,7 @@
     "@types/nconf": "0.0.34",
     "@types/node": "^8.0.25",
     "ghooks": "^2.0.0",
+    "handlebars": "^4.0.10",
     "shx": "^0.2.2",
     "ts-node": "^3.3.0",
     "tslint": "^5.7.0"

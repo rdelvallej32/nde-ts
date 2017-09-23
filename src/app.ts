@@ -112,7 +112,9 @@ export abstract class BaseApp implements NodeAppInterface {
 
 class TestApp extends BaseApp {
   initRouting() {
-
+    this.app.get('/test', (req, res) => {
+      res.render('test');
+    });
   }
 }
 

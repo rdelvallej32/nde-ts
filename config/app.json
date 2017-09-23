@@ -1,5 +1,7 @@
 {
   "viewEngine": {
-    "type": "papa"
+    "type": "handlebars",
+    "ext": "hbs",
+    "cache": true
   }
 }
