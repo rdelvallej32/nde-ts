@@ -4,6 +4,7 @@ import * as path from 'path';
 
 import { express } from './lib/express';
 import { lodash as _ } from './lib/lodash';
+import { TerminalColor, AppColor } from './util/terminal-color';
 
 import {
   AppDebug,
@@ -26,6 +27,7 @@ export type BaseProcess = 'middleware' | 'view-engine' | 'routing';
 export abstract class BaseApp implements NodeAppInterface {
   protected app: express.Express;
   protected config: NodeAppConfig = AppConfig;
+  protected termColor: TerminalColor = AppColor;
 
   constructor() {
     this.app = express();
@@ -41,12 +43,11 @@ export abstract class BaseApp implements NodeAppInterface {
         version: AppConfig.get('package:version'),
         environment: AppConfig.getEnvironment()
       });
-      console.log('%s v%s (%s) listening on port %d',
-        AppConfig.get('package:name'),
-        AppConfig.get('package:version'),
-        AppConfig.get('env:NODE_ENV'),
-        AppConfig.get('env:PORT')
-      )
+      this.termColor.setAppTitle(AppConfig.get('package:name'))
+      this.termColor.setAppMessage(
+        'Version: ' + AppConfig.get('package:version') +
+        ', Env: ' + AppConfig.get('env:NODE_ENV') +
+        '. Port: ' + AppConfig.get('env:PORT'))
     });
   }
 
