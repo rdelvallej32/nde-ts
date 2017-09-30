@@ -15,6 +15,8 @@ import {
   AppSecurity
 } from './common/middleware';
 
+import { AppGracefulProcess } from './util/process';
+
 import { AppConfig, AppLog, NodeAppConfig } from './common/services/index';
 
 export interface NodeAppInterface {
@@ -30,6 +32,8 @@ export abstract class BaseApp implements NodeAppInterface {
   protected termColor: TerminalColor = AppColor;
 
   constructor() {
+    AppGracefulProcess.init();
+
     this.app = express();
     this.initBase('middleware')
       .initBase('routing')
