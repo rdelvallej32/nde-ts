@@ -1,6 +1,6 @@
 {
   "name": "nde-ts",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Common node and express library for node apps",
   "main": "build/app/index.js",
   "typings": "build/app/index.d.ts",
